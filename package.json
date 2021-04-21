@@ -1,0 +1,26 @@
+{
+  "name": "uwc-tasks-discord-bot",
+  "version": "1.0.0",
+  "description": "UWC tasks bot for Discord",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UmbrellaWorldwide/uwc-tasks-discord-bot.git"
+  },
+  "author": "Umbrella Worldwide Corporation",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/UmbrellaWorldwide/uwc-tasks-discord-bot/issues"
+  },
+  "homepage": "https://github.com/UmbrellaWorldwide/uwc-tasks-discord-bot#readme",
+  "dependencies": {
+    "discord.js": "^12.5.3",
+    "dotenv": "^8.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.24.0"
+  }
+}
