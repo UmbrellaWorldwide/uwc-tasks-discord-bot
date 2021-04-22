@@ -83,10 +83,10 @@ app.post('/notify/send', function(req, res) {
 		.setColor(data.event_data.task.color_id.toUpperCase())
 		.setTitle(task_types[data.event_name])
 		.setDescription(data.event_title)
-		.addFields(
-			data.event_data.task.description ? { name: 'Details', value: description } : null,
-			{ name: link_title, value: `[Board View](${data.task_url}) | [Public View](${data.task_url_pub})` },
-		);
+		.addField(link_title, `[Board View](${data.task_url}) | [Public View](${data.task_url_pub})`)
+		if (! empty(data.event_data.task.description)) {
+			.addField('Details', data.event_data.task.description)
+		}
 
 	if (data.notify_type === 'project') {
 		client.channels.cache.get(data.channel).send(notifyEmbed);
