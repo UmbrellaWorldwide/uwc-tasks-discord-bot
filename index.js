@@ -14,8 +14,10 @@ const client = new Discord.Client();
 
 
 // ===========> Start: Bot logic
-client.once('ready', () => {
+client.once('ready', async () => {
 	console.log('UWC Tasks bot is Ready!');
+	const users = await client.users.cache;
+	console.log(users);
 	client.user.setPresence({ activity: { type: 'WATCHING', name: 'Projects, use: !task' }, status: 'online' });
 });
 
@@ -67,8 +69,7 @@ app.post('/notify/send', function(req, res) {
 		client.channels.cache.get(req.body.channel).send('<content project>');
 	}
 	else if (req.body.notify_type === 'user') {
-		const user = client.users.cache.get(req.body.channel);
-		user.user.send('<content user>');
+		client.channels.cache.get(req.body.channel).send('<content user>');
 	}
 
 	res.end();
