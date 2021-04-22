@@ -71,4 +71,7 @@ client.on('message', message => {
 	else if (message.content === `${prefix}user-info`) {
 		message.channel.send(`Your username: ${message.author.username}\nYour ID: ${message.author.id}`);
 	}
+	else if (message.content === `${prefix}channel-info`) {
+		message.channel.send(`Channel name: ${message.channel.name}\nChannel ID: ${message.channel.id}`);
+	}
 });
