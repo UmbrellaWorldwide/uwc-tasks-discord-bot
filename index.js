@@ -75,7 +75,7 @@ app.post('/notify/send', function(req, res) {
 		link_title = 'Task Links';
 		break;
 	default:
-		description = data.task.event_data.description;
+		description = data.event_data.task.description;
 		link_title = 'Links';
 	}
 
