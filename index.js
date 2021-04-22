@@ -68,11 +68,20 @@ app.post('/notify/send', function(req, res) {
 	let description;
 
 	switch (data.event_name) {
-	case 'task.create':
-		description = data.event_data.task.description;
-		break;
 	case 'task.file.create':
 		description = `File: ${data.event_data.file.name}\nSize: ${bytesToSize(data.event_data.file.size, ' ')}`;
+		break;
+	case 'comment.create':
+		description = data.event_data.comment.comment;
+		break;
+	case 'comment.update':
+		description = data.event_data.comment.comment;
+		break;
+	case 'subtask.create':
+		description = data.event_data.subtask.title;
+		break;
+	case 'subtask.update':
+		description = data.event_data.subtask.title;
 		break;
 	default:
 		description = data.event_data.task.description ? data.event_data.task.description : '*No description provided.*';
