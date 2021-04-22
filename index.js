@@ -45,7 +45,7 @@ client.on('message', message => {
 
 
 // ===========> Start: Express server
-const data = '{"uwc_tasks":{"online":true,"status":"200"}}';
+const resp_data = '{"uwc_tasks":{"online":true,"status":"200"}}';
 
 app.get('/', function(req, res) {
 	res.send('<html><head></head><body>UW Tasks</body></html>');
@@ -55,7 +55,7 @@ app.get('/', function(req, res) {
 app.post('/', function(req, res) {
 	console.log(req);
 	res.type('json');
-	res.json(data);
+	res.json(resp_data);
 	/* Webserver --> Bot */
 	res.end();
 });
@@ -63,32 +63,33 @@ app.post('/', function(req, res) {
 app.post('/notify/send', function(req, res) {
 	console.log(req.body);
 	res.type('json');
-	res.json(data);
+	res.json(resp_data);
 
 	// Proccess data variables
+	let data = req.body;
 	let description, link_title;
 
-	switch (req.body.event_name) {
+	switch (data.event_name) {
 	case 'task.created':
-		description = req.body.task.description;
+		description = data.event_data.task.description;
 		link_title = 'Task Links';
 		break;
 	default:
-		description = req.body.task.description;
+		description = data.task.event_data.description;
 		link_title = 'Links';
 	}
 
 	const notifyEmbed = new Discord.MessageEmbed()
-		.setColor(req.body.color_id)
-		.setTitle(task_types[req.body.event_name])
-		.setDescription(req.body.event_title)
+		.setColor(data.event_data.task.color_id)
+		.setTitle(task_types[data.event_name])
+		.setDescription(data.event_title)
 		.addFields(
 			{ name: 'Details', value: description },
-			{ name: link_title, value: `[Board View](${req.body.task_url}) | [Public View](${req.body.task_url_pub})` },
+			{ name: link_title, value: `[Board View](${data.task_url}) | [Public View](${data.task_url_pub})` },
 		);
 
-	if (req.body.notify_type === 'project') {
-		client.channels.cache.get(req.body.channel).send(notifyEmbed);
+	if (data.notify_type === 'project') {
+		client.channels.cache.get(data.channel).send(notifyEmbed);
 	}
 	// else if (req.body.notify_type === 'user') {
 	// 	client.channels.cache.get(req.body.user).send('<content user>');
