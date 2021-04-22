@@ -16,8 +16,6 @@ const client = new Discord.Client();
 // ===========> Start: Bot logic
 client.once('ready', async () => {
 	console.log('UWC Tasks bot is Ready!');
-	const users = await client.users.cache;
-	console.log(users);
 	client.user.setPresence({ activity: { type: 'WATCHING', name: 'Projects, use: !task' }, status: 'online' });
 });
 
@@ -83,12 +81,13 @@ app.post('/notify/send', function(req, res) {
 	const notifyEmbed = new Discord.MessageEmbed()
 		.setColor(data.event_data.task.color_id.toUpperCase())
 		.setTitle(task_types[data.event_name])
-		.setDescription(data.event_title)
-		.addField('Task Links', `[Board View](${data.task_url}) | [Public View](${data.task_url_pub})`)
+		.setDescription(data.event_title);
 
 	if (description) {
-		notifyEmbed.addField('Details', description)
+		notifyEmbed.addField('Details', description);
 	}
+
+	notifyEmbed.addField('Task Links', `[Board View](${data.task_url}) | [Public View](${data.task_url_pub})`);
 
 	if (data.notify_type === 'project') {
 		client.channels.cache.get(data.channel).send(notifyEmbed);
@@ -109,5 +108,6 @@ function bytesToSize(bytes, seperator = '') {
 	if (i === 0) return `${bytes}${seperator}${sizes[i]}`;
 	return `${(bytes / 1024 ** i).toFixed(1)}${seperator}${sizes[i]}`;
 }
+
 
 app.listen(PORT, () => console.log(`Server is listening on port ${PORT}...`));
