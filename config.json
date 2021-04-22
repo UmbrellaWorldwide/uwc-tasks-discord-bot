@@ -1,3 +1,23 @@
 {
-    "prefix": "!task"
+    "prefix": "!task",
+    "task_types": {
+        "comment.create": "Comment Created",
+        "comment.update": "Comment Updated",
+        "comment.delete": "Comment Deleted",
+        "task.file.create": "Task File Created",
+        "task.move.project": "Task Moved to a Project",
+        "task.move.column": "Task Moved to Column",
+        "task.move.position": "Task Moved to Position",
+        "task.move.swimlane": "Task Moved to Swimlane",
+        "task.update": "Task Updated",
+        "task.create": "Task Created",
+        "task.close": "Task Closed",
+        "task.open": "Task Opened",
+        "task.assignee_change": "Task Assignee Changed",
+        "subtask.update": "Subtask Updated",
+        "subtask.create": "Subtask Created",
+        "subtask.delete": "Subtask Deleted",
+        "task_internal_link.create_update": "Task Internal Link Created/Updated",
+        "task_internal_link.delete": "Task Created Link Deleted"
+    }
 }

@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const Discord = require('discord.js');
-const { prefix } = require('./config.json');
+const { prefix, task_types } = require('./config.json');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -65,12 +65,34 @@ app.post('/notify/send', function(req, res) {
 	res.type('json');
 	res.json(data);
 
+	// Proccess data variables
+	let description, link_title;
+
+	switch (req.body.event_name) {
+	case 'task.created':
+		description = req.body.task.description;
+		link_title = 'Task Links';
+		break;
+	default:
+		description = req.body.task.description;
+		link_title = 'Links';
+	}
+
+	const notifyEmbed = new Discord.MessageEmbed()
+		.setColor(req.body.color_id)
+		.setTitle(task_types[req.body.event_name])
+		.setDescription(req.body.event_title)
+		.addFields(
+			{ name: 'Details', value: description },
+			{ name: link_title, value: `[Board View](${req.body.task_url}) | [Public View](${req.body.task_url_pub})` },
+		);
+
 	if (req.body.notify_type === 'project') {
-		client.channels.cache.get(req.body.channel).send('<content project>');
+		client.channels.cache.get(req.body.channel).send(notifyEmbed);
 	}
-	else if (req.body.notify_type === 'user') {
-		client.channels.cache.get(req.body.user).send('<content user>');
-	}
+	// else if (req.body.notify_type === 'user') {
+	// 	client.channels.cache.get(req.body.user).send('<content user>');
+	// }
 
 	res.end();
 });
