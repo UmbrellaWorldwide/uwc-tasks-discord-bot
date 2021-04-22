@@ -67,26 +67,27 @@ app.post('/notify/send', function(req, res) {
 
 	// Proccess data variables
 	let data = req.body;
-	let description, link_title;
+	let description;
 
 	switch (data.event_name) {
 	case 'task.created':
 		description = data.event_data.task.description;
-		link_title = 'Task Links';
+		break;
+	case 'task.file.created':
+		description = `File: ${data.event_data.file.name}\nSize: ${bytesToSize(data.event_data.file.size, ' ')}`;
 		break;
 	default:
 		description = data.event_data.task.description ? data.event_data.task.description : '*No description provided.*';
-		link_title = 'Links';
 	}
 
 	const notifyEmbed = new Discord.MessageEmbed()
 		.setColor(data.event_data.task.color_id.toUpperCase())
 		.setTitle(task_types[data.event_name])
 		.setDescription(data.event_title)
-		.addField(link_title, `[Board View](${data.task_url}) | [Public View](${data.task_url_pub})`)
+		.addField('Task Links', `[Board View](${data.task_url}) | [Public View](${data.task_url_pub})`)
 
-	if (data.event_data.task.description) {
-		notifyEmbed.addField('Details', data.event_data.task.description)
+	if (description) {
+		notifyEmbed.addField('Details', description)
 	}
 
 	if (data.notify_type === 'project') {
@@ -98,5 +99,15 @@ app.post('/notify/send', function(req, res) {
 
 	res.end();
 });
+
+
+// Helpers
+function bytesToSize(bytes, seperator = '') {
+	const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+	if (bytes == 0) return 'n/a';
+	const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10);
+	if (i === 0) return `${bytes}${seperator}${sizes[i]}`;
+	return `${(bytes / 1024 ** i).toFixed(1)}${seperator}${sizes[i]}`;
+}
 
 app.listen(PORT, () => console.log(`Server is listening on port ${PORT}...`));
