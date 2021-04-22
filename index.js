@@ -4,6 +4,8 @@ const Discord = require('discord.js');
 const { prefix } = require('./config.json');
 
 const app = express();
+const PORT = process.env.PORT || 8080;
+
 const client = new Discord.Client();
 
 
@@ -32,8 +34,7 @@ app.post('/notify/send', function(req, res) {
 	console.log(req);
 });
 
-app.listen(8080);
-console.log('API Online');
+app.listen(PORT, () => console.log(`Server is listening on port ${PORT}...`));
 
 
 // Start: Bot logic
