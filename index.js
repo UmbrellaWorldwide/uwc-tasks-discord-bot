@@ -84,7 +84,7 @@ app.post('/notify/send', function(req, res) {
 		.setTitle(task_types[data.event_name])
 		.setDescription(data.event_title)
 		.addFields(
-			{ name: 'Details', value: description },
+			data.event_data.task.description ? { name: 'Details', value: description } : null,
 			{ name: link_title, value: `[Board View](${data.task_url}) | [Public View](${data.task_url_pub})` },
 		);
 
