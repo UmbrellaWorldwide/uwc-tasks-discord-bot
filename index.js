@@ -31,7 +31,10 @@ app.post('/', function(req, res) {
 });
 
 app.post('/notify/send', function(req, res) {
-	console.log(req);
+	console.log(req.body);
+	res.type('json');
+	res.json(data);
+	res.end();
 });
 
 app.listen(PORT, () => console.log(`Server is listening on port ${PORT}...`));
