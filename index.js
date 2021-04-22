@@ -13,7 +13,48 @@ app.use(bodyParser.raw());
 const client = new Discord.Client();
 
 
-// Start: Express server
+// ===========> Start: Bot logic
+client.once('ready', () => {
+	console.log('UWC Tasks bot is Ready!');
+	client.user.setPresence({ activity: { type: 'WATCHING', name: 'Projects, use: !task' }, status: 'online' });
+});
+
+client.login(process.env.BOT_TOKEN);
+
+client.on('message', message => {
+	if (!message.content.startsWith(prefix) || message.author.bot) return;
+
+	const args = message.content.slice(prefix.length).trim().split(' ');
+	const command = args.shift().toLowerCase();
+
+	if (command === 'server-info') {
+		if (!args.length) {
+			return message.channel.send(`You didn't provide any arguments, ${message.author}!`);
+		}
+		message.channel.send(`This server's name is: ${message.guild.name}`);
+	}
+	else if (command === 'server-extras') {
+		if (!args.length) {
+			return message.channel.send(`You didn't provide any arguments, ${message.author}!`);
+		}
+		message.channel.send(`Server name: ${message.guild.name}\nTotal members: ${message.guild.memberCount}`);
+	}
+	else if (command === 'user-info') {
+		if (!args.length) {
+			return message.channel.send(`You didn't provide any arguments, ${message.author}!`);
+		}
+		message.channel.send(`Your username: ${message.author.username}\nYour ID: ${message.author.id}`);
+	}
+	else if (command === 'channel-info') {
+		if (!args.length) {
+			return message.channel.send(`You didn't provide any arguments, ${message.author}!`);
+		}
+		message.channel.send(`Channel name: ${message.channel.name}\nChannel ID: ${message.channel.id}`);
+	}
+});
+
+
+// ===========> Start: Express server
 const data = '{"example":{"online":true,"status":"200"}}';
 
 app.get('/', function(req, res) {
@@ -42,36 +83,3 @@ app.post('/notify/send', function(req, res) {
 });
 
 app.listen(PORT, () => console.log(`Server is listening on port ${PORT}...`));
-
-
-// Start: Bot logic
-
-client.once('ready', () => {
-	console.log('UWC Tasks bot is Ready!');
-	client.user.setPresence({ activity: { type: 'WATCHING', name: 'Projects, use: !task' }, status: 'online' });
-});
-
-client.login(process.env.BOT_TOKEN);
-
-client.on('message', message => {
-	// console.log(message.content);
-	if (message.content === `${prefix}ping`) {
-		// send back "Pong." to the channel the message was sent in
-		message.channel.send('Pong.');
-	}
-	else if (message.content === `${prefix}beep`) {
-		message.channel.send('Boop.');
-	}
-	else if (message.content === `${prefix}server`) {
-		message.channel.send(`This server's name is: ${message.guild.name}`);
-	}
-	else if (message.content === `${prefix}server-extras`) {
-		message.channel.send(`Server name: ${message.guild.name}\nTotal members: ${message.guild.memberCount}`);
-	}
-	else if (message.content === `${prefix}user-info`) {
-		message.channel.send(`Your username: ${message.author.username}\nYour ID: ${message.author.id}`);
-	}
-	else if (message.content === `${prefix}channel-info`) {
-		message.channel.send(`Channel name: ${message.channel.name}\nChannel ID: ${message.channel.id}`);
-	}
-});
