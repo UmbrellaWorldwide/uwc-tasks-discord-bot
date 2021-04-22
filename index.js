@@ -80,7 +80,7 @@ app.post('/notify/send', function(req, res) {
 	}
 
 	const notifyEmbed = new Discord.MessageEmbed()
-		.setColor(data.event_data.task.color_id)
+		.setColor(data.event_data.task.color_id.toUpperCase())
 		.setTitle(task_types[data.event_name])
 		.setDescription(data.event_title)
 		.addFields(
