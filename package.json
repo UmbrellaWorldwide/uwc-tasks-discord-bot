@@ -4,6 +4,7 @@
   "description": "UWC tasks bot for Discord",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,7 +19,8 @@
   "homepage": "https://github.com/UmbrellaWorldwide/uwc-tasks-discord-bot#readme",
   "dependencies": {
     "discord.js": "^12.5.3",
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1"
   },
   "devDependencies": {
     "eslint": "^7.24.0"
