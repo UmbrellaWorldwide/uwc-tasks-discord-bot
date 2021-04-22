@@ -81,7 +81,7 @@ app.post('/notify/send', function(req, res) {
 		description = data.event_data.subtask.title;
 		break;
 	case 'subtask.update':
-		description = data.event_data.subtask.title;
+		description = `Title: ${data.event_data.subtask.title}\nStatus: ${data.event_data.subtask.status_name}`;
 		break;
 	default:
 		description = data.event_data.task.description ? data.event_data.task.description : '*No description provided.*';
