@@ -64,10 +64,10 @@ app.post('/notify/send', function(req, res) {
 	res.json(data);
 
 	if (req.body.notify_type === 'project') {
-		client.channels.fetch(req.body.channel).send('<content project>');
+		client.channels.cache.get(req.body.channel).send('<content project>');
 	}
 	else if (req.body.notify_type === 'user') {
-		client.users.fetch(req.body.channel).send('<content user>');
+		client.users.cache.get(req.body.channel).send('<content user>');
 	}
 
 	res.end();
