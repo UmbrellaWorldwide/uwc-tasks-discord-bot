@@ -16,7 +16,7 @@ const client = new Discord.Client();
 // ===========> Start: Bot logic
 client.once('ready', async () => {
 	console.log('UWC Tasks bot is Ready!');
-	client.user.setPresence({ activity: { type: 'WATCHING', name: 'Projects, use: !task' }, status: 'online' });
+	client.user.setPresence({ activity: { type: 'WATCHING', name: 'Projects, use: !task help' }, status: 'online' });
 });
 
 client.login(process.env.BOT_TOKEN);
@@ -27,10 +27,6 @@ client.on('message', message => {
 	const args = message.content.slice(prefix.length).trim().split(' ');
 	const command = args.shift().toLowerCase();
 
-	// if (!args.length) {
-	// 	return message.channel.send(`You didn't provide any arguments, ${message.author}!`);
-	// }
-
 	if (command === 'server-info') {
 		message.channel.send(`**Server name:** ${message.guild.name}\n**Server ID:** ${message.guild.id}`);
 	}
@@ -39,6 +35,22 @@ client.on('message', message => {
 	}
 	else if (command === 'user-info') {
 		message.channel.send(`**Your username:** ${message.author.username}\n**Your ID:** ${message.author.id}`);
+	}
+	else if (command === 'args-info') {
+		if (!args.length) {
+			return message.channel.send(`You didn't provide any arguments, ${message.author}!`);
+		}
+		message.channel.send(`Command name: ${command}\nArguments: ${args}`);
+	}
+	else if (command === 'help') {
+		const helpEmbed = new Discord.MessageEmbed()
+			.setColor('#004A99')
+			.setAuthor(client.user.username, 'https://apps.umbrella.co/cdn/uw_icon_notify_64x64.png')
+			.setDescription(`Welcome to ${client.user.username}, a Discord bot that let you receive instant notifications about projects managed on [UW Tasks](https://apps.umbrella.co/tasks/) (Kanboard Projects Management).\n\nThese are the commands available in the ${client.user.username} bot!\n\n> Bot prefix is: \` ${prefix} \``)
+			.addField('Commands', '`server-info` | `channel-info` | `user-info` | `args-info` | `help`')
+			.addField('Use example', '`!task server-info`')
+			.setFooter(`${client.user.username} by Umbrella Worldwide!`);
+		message.channel.send(helpEmbed);
 	}
 });
 
