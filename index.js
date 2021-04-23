@@ -82,6 +82,9 @@ app.post('/notify/send', function(req, res) {
 	let details_title = 'Details';
 
 	switch (data.event_name) {
+	case 'task.create':
+		description = data.event_data.task.description;
+		break;
 	case 'task.file.create':
 		description = `File: ${data.event_data.file.name}\nSize: ${bytesToSize(data.event_data.file.size, ' ')}`;
 		break;
