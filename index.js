@@ -87,7 +87,7 @@ app.post('/notify/send', function(req, res) {
 		description = `Title: ${data.event_data.subtask.title}\nStatus: ${data.event_data.subtask.status_name} ${emojis[data.event_data.subtask.status_name]}`;
 		break;
 	default:
-		description = data.event_data.task.description ? data.event_data.task.description : '*No description provided.*';
+		// description = data.event_data.task.description ? data.event_data.task.description : '*No description provided.*';
 	}
 
 	const notifyEmbed = new Discord.MessageEmbed()
