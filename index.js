@@ -93,7 +93,7 @@ app.post('/notify/send', function(req, res) {
 	const notifyEmbed = new Discord.MessageEmbed()
 		.setColor(data.event_data.task.color_id.toUpperCase())
 		.setTitle(`${emojis[data.event_name]} ${task_types[data.event_name]}`)
-		.setDescription(data.event_title);
+		.setDescription(`${data.event_title}\n\n**Project:** ${data.project_name}\n**Task:** ${data.event_data.task.title}`);
 
 	if (description) {
 		notifyEmbed.addField(details_title, description);
