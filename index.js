@@ -27,10 +27,11 @@ client.on('message', message => {
 	const args = message.content.slice(prefix.length).trim().split(' ');
 	const command = args.shift().toLowerCase();
 
-	if (!args.length) {
-		return message.channel.send(`You didn't provide any arguments, ${message.author}!`);
-	}
-	else if (command === 'server-info') {
+	// if (!args.length) {
+	// 	return message.channel.send(`You didn't provide any arguments, ${message.author}!`);
+	// }
+
+	if (command === 'server-info') {
 		message.channel.send(`**Server name:** ${message.guild.name}\n**Server ID:** ${message.guild.id}`);
 	}
 	else if (command === 'channel-info') {
