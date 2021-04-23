@@ -27,17 +27,17 @@ client.on('message', message => {
 	const args = message.content.slice(prefix.length).trim().split(' ');
 	const command = args.shift().toLowerCase();
 
-	if (command === 'server-info') {
-		// if (!args.length) {
-		// 	return message.channel.send(`You didn't provide any arguments, ${message.author}!`);
-		// }
-		message.channel.send(`Server name: ${message.guild.name}`);
+	if (!args.length) {
+		return message.channel.send(`You didn't provide any arguments, ${message.author}!`);
 	}
-	else if (command === 'user-info') {
-		message.channel.send(`Your username: ${message.author.username}\nYour ID: ${message.author.id}`);
+	else if (command === 'server-info') {
+		message.channel.send(`**Server name:** ${message.guild.name}\n**Server ID:** ${message.guild.id}`);
 	}
 	else if (command === 'channel-info') {
-		message.channel.send(`Channel name: ${message.channel.name}\nChannel ID: ${message.channel.id}`);
+		message.channel.send(`**Channel name:** ${message.channel.name}\n**Channel ID:** ${message.channel.id}`);
+	}
+	else if (command === 'user-info') {
+		message.channel.send(`**Your username:** ${message.author.username}\n**Your ID:** ${message.author.id}`);
 	}
 });
 
@@ -93,7 +93,7 @@ app.post('/notify/send', function(req, res) {
 	const notifyEmbed = new Discord.MessageEmbed()
 		.setColor(data.event_data.task.color_id.toUpperCase())
 		.setTitle(`${emojis[data.event_name]} ${task_types[data.event_name]}`)
-		.setDescription(`${data.event_title}\n\n**Project:** ${data.project_name}\n**Task:** ${data.event_data.task.title}`);
+		.setDescription(`${data.event_title}\n\n**Project:** ${data.project_name}\n**Task:** [#${data.event_data.task.id}] ${data.event_data.task.title}`);
 
 	if (description) {
 		notifyEmbed.addField(details_title, description);
