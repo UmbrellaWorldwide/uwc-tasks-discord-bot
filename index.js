@@ -64,8 +64,9 @@ app.post('/notify/send', function(req, res) {
 	res.json(resp_data);
 
 	// Proccess data variables
-	let data = req.body;
+	const data = req.body;
 	let description;
+	let details_title = 'Details';
 
 	switch (data.event_name) {
 	case 'task.file.create':
@@ -73,9 +74,11 @@ app.post('/notify/send', function(req, res) {
 		break;
 	case 'comment.create':
 		description = data.event_data.comment.comment;
+		details_title = 'Comment';
 		break;
 	case 'comment.update':
 		description = data.event_data.comment.comment;
+		details_title = 'Comment';
 		break;
 	case 'subtask.create':
 		description = data.event_data.subtask.title;
@@ -89,11 +92,11 @@ app.post('/notify/send', function(req, res) {
 
 	const notifyEmbed = new Discord.MessageEmbed()
 		.setColor(data.event_data.task.color_id.toUpperCase())
-		.setTitle(task_types[data.event_name])
+		.setTitle(`${emojis[data.event_name]} ${task_types[data.event_name]}`)
 		.setDescription(data.event_title);
 
 	if (description) {
-		notifyEmbed.addField('Details', description);
+		notifyEmbed.addField(details_title, description);
 	}
 
 	notifyEmbed.addField('Task Links', `[Board View](${data.task_url}) | [Public View](${data.task_url_pub})`);

@@ -23,6 +23,24 @@
     "emojis": {
         "Todo": ":pencil:",
         "In progress": ":clock3:",
-        "Done": ":white_check_mark:"
+        "Done": ":white_check_mark:",
+        "comment.create": ":speech_balloon:",
+        "comment.update": ":speech_balloon:",
+        "comment.delete": ":wastebasket:",
+        "task.file.delete": ":paperclip:",
+        "task.move.project": ":bookmark:",
+        "task.move.column": ":bar_chart:",
+        "task.move.position": ":bookmark_tabs:",
+        "task.move.swimlane": ":chart_with_upwards_trend:",
+        "task.update": ":pencil:",
+        "task.create": ":clipboard:",
+        "task.close": ":outbox_tray:",
+        "task.open": ":inbox_tray:",
+        "task.assignee_change": ":recycle:",
+        "subtask.update": ":pencil:",
+        "subtask.create": ":clipboard:",
+        "subtask.detele": ":wastebasket:",
+        "task_internal_link.create_update": ":link:",
+        "task_internal_link.delete": ":wastebasket:"
     }
 }
