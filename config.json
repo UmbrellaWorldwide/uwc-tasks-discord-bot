@@ -19,5 +19,10 @@
         "subtask.delete": "Subtask Deleted",
         "task_internal_link.create_update": "Task Internal Link Created/Updated",
         "task_internal_link.delete": "Task Created Link Deleted"
+    },
+    "emojis": {
+        "Todo": ":pencil:",
+        "In progress": ":clock3:",
+        "Done": ":white_check_mark:"
     }
 }

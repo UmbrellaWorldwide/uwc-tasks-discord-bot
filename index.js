@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const Discord = require('discord.js');
-const { prefix, task_types } = require('./config.json');
+const { prefix, task_types, emojis } = require('./config.json');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -81,7 +81,7 @@ app.post('/notify/send', function(req, res) {
 		description = data.event_data.subtask.title;
 		break;
 	case 'subtask.update':
-		description = `Title: ${data.event_data.subtask.title}\nStatus: ${data.event_data.subtask.status_name}`;
+		description = `Title: ${data.event_data.subtask.title}\nStatus: ${data.event_data.subtask.status_name} ${emojis[data.event_data.subtask.status_name]}`;
 		break;
 	default:
 		description = data.event_data.task.description ? data.event_data.task.description : '*No description provided.*';
