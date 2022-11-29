@@ -1,6 +1,7 @@
 node_modules/
 notes.md
 .env
+.env.*
 logs
 *.log
 npm-debug.log*
