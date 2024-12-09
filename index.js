@@ -143,10 +143,10 @@ app.post("/notify/send", function (req, res) {
     );
 
   if (description) {
-    notifyEmbed.addField(details_title, description);
+    notifyEmbed.addFields(details_title, description);
   }
 
-  notifyEmbed.addField(
+  notifyEmbed.addFields(
     "Task Links",
     `[Board View](${data.task_url}) | [Public View](${data.task_url_pub})`
   );
