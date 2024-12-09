@@ -1,7 +1,13 @@
 import "dotenv/config";
 import express from "express";
 import bodyParser from "body-parser";
-import { Client, GatewayIntentBits, EmbedBuilder } from "discord.js";
+import {
+  Client,
+  GatewayIntentBits,
+  EmbedBuilder,
+  Events,
+  ActivityType,
+} from "discord.js";
 
 import APP_CONFIG from "./config.json" assert { type: "json" };
 const { prefix, task_types, emojis, kanboard_colors } = APP_CONFIG;
@@ -22,30 +28,38 @@ const client = new Client({
 });
 
 // ===========> Start: Bot logic
-client.once("ready", async () => {
-  console.log("UWC Tasks bot is Ready!");
+client.once(Events.ClientReady, async (readyClient) => {
+  console.log(`UWC Tasks bot is Ready! Logged in as ${readyClient.user.tag}`);
   client.user.setPresence({
-    activity: { type: "WATCHING", name: "Projects, use: !task help" },
+    activities: [
+      { type: ActivityType.Watching, name: "Projects, use: !task help" },
+    ],
     status: "online",
   });
 });
 
 client.login(process.env.BOT_TOKEN);
 
-client.on("message", (message) => {
+client.on(Events.MessageCreate, async (message) => {
   if (!message.content.startsWith(prefix) || message.author.bot) return;
 
   const args = message.content.slice(prefix.length).trim().split(" ");
   const command = args.shift().toLowerCase();
 
   if (command === "server-info") {
-    message.channel.send(
-      `**Server name:** ${message.guild.name}\n**Server ID:** ${message.guild.id}`
-    );
+    const serverInfo = `**Server name:** ${message.guild.name}\n**Server ID:** ${message.guild.id}`;
+    if (serverInfo.trim()) {
+      message.channel.send(serverInfo);
+    } else {
+      message.channel.send("Server information is not available.");
+    }
   } else if (command === "channel-info") {
-    message.channel.send(
-      `**Channel name:** ${message.channel.name}\n**Channel ID:** ${message.channel.id}`
-    );
+    const channelInfo = `**Channel name:** ${message.channel.name}\n**Channel ID:** ${message.channel.id}`;
+    if (channelInfo.trim()) {
+      message.channel.send(channelInfo);
+    } else {
+      message.channel.send("Channel information is not available.");
+    }
   } else if (command === "user-info") {
     message.channel.send(
       `**Your username:** ${message.author.username}\n**Your ID:** ${message.author.id}`
@@ -59,11 +73,11 @@ client.on("message", (message) => {
     message.channel.send(`Command name: ${command}\nArguments: ${args}`);
   } else if (command === "help") {
     const helpEmbed = new EmbedBuilder()
-      .setColor("#003A99")
-      .setAuthor(
-        client.user.username,
-        "https://apps.umbrella.co/cdn/uw_icon_notify_64x64.png"
-      )
+      .setColor(0x003a99)
+      .setAuthor({
+        name: client.user.username,
+        iconURL: "https://apps.umbrella.co/cdn/uw_icon_notify_64x64.png",
+      })
       .setDescription(
         `Welcome to ${client.user.username}, a Discord bot that let you receive instant notifications about projects managed on [UW Tasks](https://apps.umbrella.co/tasks/) (Kanboard Projects Management).\n\nThese are the commands available in the ${client.user.username} bot!\n\n> Bot prefix is: \` ${prefix} \``
       )
@@ -74,8 +88,8 @@ client.on("message", (message) => {
       })
       .addFields({ name: "Use example", value: "`!task server-info`" })
       .setTimestamp()
-      .setFooter(`${client.user.username} by Umbrella Worldwide!`);
-    message.channel.send(helpEmbed);
+      .setFooter({ text: `${client.user.username} by Umbrella Worldwide!` });
+    message.channel.send({ embeds: [helpEmbed] });
   }
 });
 
@@ -96,7 +110,7 @@ app.post("/", function (req, res) {
 });
 
 app.post("/notify/send", function (req, res) {
-  console.log(req.body);
+  // console.log({ kanboard_object: req.body });
   res.type("json");
   res.json(resp_data);
 
@@ -155,7 +169,7 @@ app.post("/notify/send", function (req, res) {
   });
 
   if (data.notify_type === "project") {
-    client.channels.cache.get(data.channel).send(notifyEmbed);
+    client.channels.cache.get(data.channel).send({ embeds: [notifyEmbed] });
   }
   // else if (req.body.notify_type === 'user') {
   // 	client.channels.cache.get(req.body.user).send('<content user>');
