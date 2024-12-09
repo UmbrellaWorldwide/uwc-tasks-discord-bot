@@ -4,7 +4,7 @@ import bodyParser from "body-parser";
 import { Client, GatewayIntentBits, EmbedBuilder } from "discord.js";
 
 import APP_CONFIG from "./config.json" assert { type: "json" };
-const { prefix, task_types, emojis } = APP_CONFIG;
+const { prefix, task_types, emojis, kanboard_colors } = APP_CONFIG;
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -59,7 +59,7 @@ client.on("message", (message) => {
     message.channel.send(`Command name: ${command}\nArguments: ${args}`);
   } else if (command === "help") {
     const helpEmbed = new EmbedBuilder()
-      .setColor("#004A99")
+      .setColor("#003A99")
       .setAuthor(
         client.user.username,
         "https://apps.umbrella.co/cdn/uw_icon_notify_64x64.png"
@@ -136,7 +136,7 @@ app.post("/notify/send", function (req, res) {
   }
 
   const notifyEmbed = new EmbedBuilder()
-    .setColor(data.event_data.task.color_id.toUpperCase())
+    .setColor(kanboard_colors[data.event_data.task.color_id])
     .setTitle(`${emojis[data.event_name]} ${task_types[data.event_name]}`)
     .setDescription(
       `${data.event_title}\n\n**Project:** ${data.project_name}\n**Task:** [#${data.event_data.task.id}] ${data.event_data.task.title}`
