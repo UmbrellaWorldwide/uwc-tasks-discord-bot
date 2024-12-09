@@ -67,11 +67,13 @@ client.on("message", (message) => {
       .setDescription(
         `Welcome to ${client.user.username}, a Discord bot that let you receive instant notifications about projects managed on [UW Tasks](https://apps.umbrella.co/tasks/) (Kanboard Projects Management).\n\nThese are the commands available in the ${client.user.username} bot!\n\n> Bot prefix is: \` ${prefix} \``
       )
-      .addField(
-        "Commands",
-        "`server-info` | `channel-info` | `user-info` | `args-info` | `help`"
-      )
-      .addField("Use example", "`!task server-info`")
+      .addFields({
+        name: "Commands",
+        value:
+          "`server-info` | `channel-info` | `user-info` | `args-info` | `help`",
+      })
+      .addFields({ name: "Use example", value: "`!task server-info`" })
+      .setTimestamp()
       .setFooter(`${client.user.username} by Umbrella Worldwide!`);
     message.channel.send(helpEmbed);
   }
@@ -140,16 +142,17 @@ app.post("/notify/send", function (req, res) {
     .setTitle(`${emojis[data.event_name]} ${task_types[data.event_name]}`)
     .setDescription(
       `${data.event_title}\n\n**Project:** ${data.project_name}\n**Task:** [#${data.event_data.task.id}] ${data.event_data.task.title}`
-    );
+    )
+    .setTimestamp();
 
   if (description) {
-    notifyEmbed.addFields(details_title, description);
+    notifyEmbed.addFields({ name: details_title, value: description });
   }
 
-  notifyEmbed.addFields(
-    "Task Links",
-    `[Board View](${data.task_url}) | [Public View](${data.task_url_pub})`
-  );
+  notifyEmbed.addFields({
+    name: "Task Links",
+    value: `[Board View](${data.task_url}) | [Public View](${data.task_url_pub})`,
+  });
 
   if (data.notify_type === "project") {
     client.channels.cache.get(data.channel).send(notifyEmbed);
